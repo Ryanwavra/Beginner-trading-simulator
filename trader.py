@@ -2,10 +2,11 @@ import logging
 logger = logging.getLogger(__name__)
 
 class Trader:
-    def __init__(self):
+    def __init__(self, config):
         self.balance = 0
         self.trades = []
         self.history = []
+        self.config = config
 
     def buy(self, position, stop_loss):
         try:

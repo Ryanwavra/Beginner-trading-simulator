@@ -1,8 +1,12 @@
+import json
 import logging
 import trader
 import strategy
 import market
 import orchestrator
+
+with open("config/default.json") as f:
+    config = json.load(f)
 
 logging.basicConfig(
     level=logging.INFO,
@@ -18,10 +22,10 @@ logger = logging.getLogger(__name__)
 def main():
     logger.info("Engine starting")
     try:
-        market_data = market.MarketData()
-        trader_obj = trader.Trader()
-        strategy_obj = strategy.Strategy(trader_obj)
-        engine = orchestrator.Orchestrator(market_data, strategy_obj, trader_obj)
+        market_data = market.MarketData(config)
+        trader_obj = trader.Trader(config)
+        strategy_obj = strategy.Strategy(trader_obj, config)
+        engine = orchestrator.Orchestrator(market_data, strategy_obj, trader_obj, config)
 
         engine.run()
         results = engine.finalize()

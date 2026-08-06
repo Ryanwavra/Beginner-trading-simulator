@@ -1,0 +1,12 @@
+{
+    "ticks": 200,
+    "volatility": 30,
+    "trend_strength": 0.6,
+
+    "buy_threshold": 100,
+    "take_profit": 200,
+    "stop_loss_offset": 25,
+    "trailing_offset": 25,
+
+    "log_level": "INFO"
+}

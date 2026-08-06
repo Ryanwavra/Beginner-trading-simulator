@@ -4,8 +4,12 @@ import random
 logger = logging.getLogger(__name__)
 
 class MarketData:
-    def __init__(self):
+    def __init__(self, config):
+        self.config = config
         self.trend_prices = []
+
+        self.volatility = config["volatility"]
+        self.trend_strength = int(config["trend_strength"] * 10)
 
     def trend_generation(self):
         try:
@@ -16,11 +20,10 @@ class MarketData:
 
             # Generate trend
             for i in range(random.randint(1, 200)):
-                new_price = (
-                    self.trend_prices[-1]
-                    + random.randint(-30, 30)
-                    + random.randint(-3, 4)
-                )
+                noise = random.randint(-self.volatility, self.volatility)
+                bias = random.randint(-self.trend_strength, self.trend_strength)
+
+                new_price = self.trend_prices[-1] + noise + bias
                 self.trend_prices.append(new_price)
 
             logger.debug(f"Trend generation complete. Total prices: {len(self.trend_prices)}")

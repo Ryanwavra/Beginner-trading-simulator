@@ -2,16 +2,18 @@ import logging
 logger = logging.getLogger(__name__)
 
 class Orchestrator:
-    def __init__(self, market, strategy, trader):
+    def __init__(self, market, strategy, trader, config):
         self.market = market
         self.strategy = strategy
         self.trader = trader
+        self.config = config
+
         self.prices = self.market.trend_generation()
 
     def run(self):
         logger.info("Orchestrator run started")
 
-        for price in self.prices:
+        for price in self.prices[:self.config["ticks"]]:
             logger.debug(f"Engine loop iteration, price={price}")
 
             # If price is None or invalid
