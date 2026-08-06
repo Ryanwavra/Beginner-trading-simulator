@@ -16,21 +16,22 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 def main():
-    market_data = market.MarketData()
-    trader_obj = trader.Trader()
-    strategy_obj = strategy.Strategy(trader_obj)
-    engine = orchestrator.Orchestrator(market_data, strategy_obj, trader_obj)
-
     logger.info("Engine starting")
-
     try:
+        market_data = market.MarketData()
+        trader_obj = trader.Trader()
+        strategy_obj = strategy.Strategy(trader_obj)
+        engine = orchestrator.Orchestrator(market_data, strategy_obj, trader_obj)
+
         engine.run()
         results = engine.finalize()
         print(results)
+
     except Exception:
         logger.critical("Engine crashed unexpectedly", exc_info=True)
 
-    logger.info("Engine stopped")
+    finally:
+        logger.info("Engine stopped")
 
 if __name__ == "__main__":
     main()
