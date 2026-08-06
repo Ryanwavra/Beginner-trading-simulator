@@ -1,84 +1,95 @@
 import random
 
-trader = {
-    'balance': 0,
-    'trades': [],
-    'trade_history': []
-}
+class Trader:
+    def __init__(self):
+        self.balance = 0
+        self.trades = []
+        self.history = []
 
-def update_trade(trade, price):
-    trader['trade_history'].append(f"opened @ ${trade['position']}, closed @ ${price}, profit ${price - trade['position']}")
-    trader['balance'] += price - trade['position']
-    trader['trades'].remove(trade)
-    return trade
-    
-
-def buy(price):
-    if price < 100:
-        trader['trades'].append({
-            'position': price,
-            'stop_loss': price - 25
+    def buy(self, position, stop_loss):
+        self.trades.append({
+            'position': position,
+            'stop_loss': stop_loss
         })
-        return trader
+
+    def update_trade(self, trade, price):
+        self.history.append(f"opened @ ${trade['position']}, closed @ {price}, profit ${price - trade['position']}")
+        self.balance += price - trade['position']
+        self.trades.remove(trade)
+        return trade
 
 
-def sell(price):
-    for trade in trader["trades"]:
+class Strategy:
+    def __init__(self, trader):
+        self.trader = trader
 
-        #take profit
-        if price > 200:
-            update_trade(trade, price)
+    def buy(self, price):
+        if price < 100:
+            stop_loss = price - 25
+            self.trader.buy(price, stop_loss)
 
-        #stop loss
-        elif price <= trade['stop_loss']:
-            update_trade(trade, price)
+    def sell(self, price):
+        for trade in self.trader.trades[:]:
 
-        #trailing stop
-        elif price >= trade['stop_loss'] + 50:
-            trade['stop_loss'] = price - 25
+            #take profit
+            if price > 200:
+                self.trader.update_trade(trade, price)
 
+            #Stop loss
+            elif price <= trade['stop_loss']:
+                self.trader.update_trade(trade, price)
 
-def last_sell(price):
-    for trade in trader['trades'][:]:
-        update_trade(trade, price)
+            #Trailing stop
+            elif price >= trade['stop_loss'] + 50:
+                trade['stop_loss'] = price - 25
 
-
-def trend_generation():
-    trend_prices = []
-
-    #start price
-    trend_prices.append(random.randint(1, 300))
-
-    #next price logic
-    for i in range(50):
-        trend_prices.append(trend_prices[-1] + random.randint(-10, 10) + random.randint(-3, 4))
-
-    return trend_prices
+    def last_sell(self, price):
+        for trade in self.trader.trades[:]:
+            self.trader.update_trade(trade, price)
 
 
-def orchestrator():
-    
-    #1. Generate a sequence of prices
-    prices = trend_generation()
+class MarketData:
+    def __init__(self):
+        self.trend_prices = []
 
-    #2. Loop through each price
-    for price in prices:
-        print(f"Price: {price}")
+    def trend_generation(self):
+        self.trend_prices.append(random.randint(1, 300))  #start price
 
-        #3. Run your buy and sell logic
-        buy(price)
-        sell(price)
-    
-    #Sell and log last trade
-    price = prices[-1]
-    last_sell(price)
+        for i in range(random.randint(1, 200)):
+            self.trend_prices.append(self.trend_prices[-1] + random.randint(-30, 30) + random.randint(-3, 4))
+
+        return self.trend_prices
 
 
-    #4 print final results
-    print("\nFINAL TRADER STATE:")
-    print(f"Balance: {trader['balance']}")
-    print("Trade History:")
-    for trade in trader['trade_history']:
-        print(trade)
+class Orchestrator:
+    def __init__(self, market, strategy, trader):
+        self.market = market
+        self.strategy = strategy
+        self.trader = trader
+        self.prices = self.market.trend_generation()
 
-orchestrator()
+    def run(self):
+        for price in self.prices:
+            self.strategy.buy(price)
+            self.strategy.sell(price)
+
+    def finalize(self):
+        if self.prices:
+            last_price = self.prices[-1]
+            self.strategy.last_sell(last_price)
+
+        return {
+            'final_balance': self.trader.balance,
+            'trade_history': self.trader.history, 
+            'open_trades': self.trader.trades
+        }
+
+
+market = MarketData()
+trader = Trader()
+strategy = Strategy(trader)
+engine = Orchestrator(market, strategy, trader)
+
+engine.run()
+results = engine.finalize()
+print(results)
