@@ -1,0 +1,98 @@
+2026-08-06 01:37:11,304 [__main__] INFO: Engine starting
+2026-08-06 01:37:11,306 [orchestrator] INFO: Orchestrator run started
+2026-08-06 01:37:11,306 [strategy] INFO: Buy signal at 96
+2026-08-06 01:37:11,307 [trader] INFO: Opened trade at 96 with stop loss 71
+2026-08-06 01:37:11,309 [strategy] INFO: Trailing stop moved at 128
+2026-08-06 01:37:11,310 [strategy] INFO: Trailing stop moved at 154
+2026-08-06 01:37:11,310 [strategy] INFO: Trailing stop moved at 179
+2026-08-06 01:37:11,310 [strategy] INFO: Sell signal (stop loss) at 151
+2026-08-06 01:37:11,310 [trader] INFO: Closed trade at 151, PnL=55
+2026-08-06 01:37:11,311 [strategy] INFO: Buy signal at 90
+2026-08-06 01:37:11,311 [trader] INFO: Opened trade at 90 with stop loss 65
+2026-08-06 01:37:11,311 [strategy] INFO: Buy signal at 85
+2026-08-06 01:37:11,311 [trader] INFO: Opened trade at 85 with stop loss 60
+2026-08-06 01:37:11,311 [strategy] INFO: Buy signal at 61
+2026-08-06 01:37:11,312 [trader] INFO: Opened trade at 61 with stop loss 36
+2026-08-06 01:37:11,313 [strategy] INFO: Sell signal (stop loss) at 61
+2026-08-06 01:37:11,313 [trader] INFO: Closed trade at 61, PnL=-29
+2026-08-06 01:37:11,313 [strategy] INFO: Buy signal at 67
+2026-08-06 01:37:11,313 [trader] INFO: Opened trade at 67 with stop loss 42
+2026-08-06 01:37:11,313 [strategy] INFO: Buy signal at 74
+2026-08-06 01:37:11,313 [trader] INFO: Opened trade at 74 with stop loss 49
+2026-08-06 01:37:11,313 [strategy] INFO: Buy signal at 50
+2026-08-06 01:37:11,313 [trader] INFO: Opened trade at 50 with stop loss 25
+2026-08-06 01:37:11,314 [strategy] INFO: Sell signal (stop loss) at 50
+2026-08-06 01:37:11,314 [trader] INFO: Closed trade at 50, PnL=-35
+2026-08-06 01:37:11,314 [strategy] INFO: Buy signal at 32
+2026-08-06 01:37:11,314 [trader] INFO: Opened trade at 32 with stop loss 7
+2026-08-06 01:37:11,314 [strategy] INFO: Sell signal (stop loss) at 32
+2026-08-06 01:37:11,315 [trader] INFO: Closed trade at 32, PnL=-29
+2026-08-06 01:37:11,315 [strategy] INFO: Sell signal (stop loss) at 32
+2026-08-06 01:37:11,315 [trader] INFO: Closed trade at 32, PnL=-35
+2026-08-06 01:37:11,315 [strategy] INFO: Sell signal (stop loss) at 32
+2026-08-06 01:37:11,315 [trader] INFO: Closed trade at 32, PnL=-42
+2026-08-06 01:37:11,315 [strategy] INFO: Buy signal at 8
+2026-08-06 01:37:11,315 [trader] INFO: Opened trade at 8 with stop loss -17
+2026-08-06 01:37:11,316 [strategy] INFO: Sell signal (stop loss) at 8
+2026-08-06 01:37:11,316 [trader] INFO: Closed trade at 8, PnL=-42
+2026-08-06 01:37:11,316 [strategy] INFO: Buy signal at 29
+2026-08-06 01:37:11,316 [trader] INFO: Opened trade at 29 with stop loss 4
+2026-08-06 01:37:11,316 [strategy] INFO: Buy signal at 16
+2026-08-06 01:37:11,316 [trader] INFO: Opened trade at 16 with stop loss -9
+2026-08-06 01:37:11,316 [strategy] INFO: Buy signal at -14
+2026-08-06 01:37:11,316 [trader] INFO: Opened trade at -14 with stop loss -39
+2026-08-06 01:37:11,316 [strategy] INFO: Sell signal (stop loss) at -14
+2026-08-06 01:37:11,318 [trader] INFO: Closed trade at -14, PnL=-46
+2026-08-06 01:37:11,318 [strategy] INFO: Sell signal (stop loss) at -14
+2026-08-06 01:37:11,318 [trader] INFO: Closed trade at -14, PnL=-43
+2026-08-06 01:37:11,318 [strategy] INFO: Sell signal (stop loss) at -14
+2026-08-06 01:37:11,318 [trader] INFO: Closed trade at -14, PnL=-30
+2026-08-06 01:37:11,319 [strategy] INFO: Buy signal at 18
+2026-08-06 01:37:11,320 [trader] INFO: Opened trade at 18 with stop loss -7
+2026-08-06 01:37:11,320 [strategy] INFO: Trailing stop moved at 18
+2026-08-06 01:37:11,320 [strategy] INFO: Buy signal at 47
+2026-08-06 01:37:11,320 [trader] INFO: Opened trade at 47 with stop loss 22
+2026-08-06 01:37:11,320 [strategy] INFO: Trailing stop moved at 47
+2026-08-06 01:37:11,320 [strategy] INFO: Trailing stop moved at 47
+2026-08-06 01:37:11,320 [strategy] INFO: Trailing stop moved at 47
+2026-08-06 01:37:11,320 [strategy] INFO: Buy signal at 74
+2026-08-06 01:37:11,320 [trader] INFO: Opened trade at 74 with stop loss 49
+2026-08-06 01:37:11,320 [strategy] INFO: Trailing stop moved at 74
+2026-08-06 01:37:11,320 [strategy] INFO: Trailing stop moved at 74
+2026-08-06 01:37:11,320 [strategy] INFO: Trailing stop moved at 74
+2026-08-06 01:37:11,320 [strategy] INFO: Trailing stop moved at 74
+2026-08-06 01:37:11,320 [strategy] INFO: Buy signal at 90
+2026-08-06 01:37:11,320 [trader] INFO: Opened trade at 90 with stop loss 65
+2026-08-06 01:37:11,320 [strategy] INFO: Trailing stop moved at 102
+2026-08-06 01:37:11,320 [strategy] INFO: Trailing stop moved at 102
+2026-08-06 01:37:11,320 [strategy] INFO: Trailing stop moved at 102
+2026-08-06 01:37:11,320 [strategy] INFO: Trailing stop moved at 102
+2026-08-06 01:37:11,320 [strategy] INFO: Trailing stop moved at 102
+2026-08-06 01:37:11,321 [strategy] INFO: Trailing stop moved at 124
+2026-08-06 01:37:11,321 [strategy] INFO: Trailing stop moved at 142
+2026-08-06 01:37:11,321 [strategy] INFO: Trailing stop moved at 142
+2026-08-06 01:37:11,321 [strategy] INFO: Trailing stop moved at 142
+2026-08-06 01:37:11,321 [strategy] INFO: Trailing stop moved at 142
+2026-08-06 01:37:11,321 [strategy] INFO: Trailing stop moved at 142
+2026-08-06 01:37:11,321 [strategy] INFO: Trailing stop moved at 164
+2026-08-06 01:37:11,321 [strategy] INFO: Trailing stop moved at 180
+2026-08-06 01:37:11,321 [strategy] INFO: Trailing stop moved at 180
+2026-08-06 01:37:11,321 [strategy] INFO: Trailing stop moved at 180
+2026-08-06 01:37:11,321 [strategy] INFO: Trailing stop moved at 180
+2026-08-06 01:37:11,321 [strategy] INFO: Trailing stop moved at 180
+2026-08-06 01:37:11,321 [strategy] INFO: Sell signal (take profit) at 214
+2026-08-06 01:37:11,321 [trader] INFO: Closed trade at 214, PnL=206
+2026-08-06 01:37:11,321 [strategy] INFO: Sell signal (take profit) at 214
+2026-08-06 01:37:11,321 [trader] INFO: Closed trade at 214, PnL=228
+2026-08-06 01:37:11,321 [strategy] INFO: Sell signal (take profit) at 214
+2026-08-06 01:37:11,321 [trader] INFO: Closed trade at 214, PnL=196
+2026-08-06 01:37:11,321 [strategy] INFO: Sell signal (take profit) at 214
+2026-08-06 01:37:11,321 [trader] INFO: Closed trade at 214, PnL=167
+2026-08-06 01:37:11,321 [strategy] INFO: Sell signal (take profit) at 214
+2026-08-06 01:37:11,321 [trader] INFO: Closed trade at 214, PnL=140
+2026-08-06 01:37:11,321 [strategy] INFO: Sell signal (take profit) at 214
+2026-08-06 01:37:11,321 [trader] INFO: Closed trade at 214, PnL=124
+2026-08-06 01:37:11,321 [orchestrator] INFO: Orchestrator run completed
+2026-08-06 01:37:11,321 [orchestrator] INFO: Finalizing trades at last price: 133
+2026-08-06 01:37:11,322 [strategy] INFO: Final sell at 133
+2026-08-06 01:37:11,323 [__main__] INFO: Engine stopped
