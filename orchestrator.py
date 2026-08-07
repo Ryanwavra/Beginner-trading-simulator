@@ -34,7 +34,8 @@ class Orchestrator:
             return {
                 'final_balance': self.trader.balance,
                 'trade_history': self.trader.history,
-                'open_trades': self.trader.trades
+                'open_trades': self.trader.trades,
+                'equity_curve': self.trader.equity_curve
             }
 
         except Exception:

@@ -5,6 +5,9 @@ import strategy
 import market
 import orchestrator
 from argparse import ArgumentParser
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+from datetime import datetime
 
 def build_cli():
     parser = ArgumentParser(description="Trading Engine CLI")
@@ -17,9 +20,6 @@ def build_cli():
 
     return parser.parse_args()
     
- 
-
-
 with open("config/default.json") as f:
     config = json.load(f)
 
@@ -42,16 +42,16 @@ def main():
         config['stop_loss_offset'] = args.sl
 
     if args.sl_trailing is not None:
-        config['trailing_offset']
+        config['trailing_offset'] = args.sl_trailing
 
     if args.ema_fast is not None:
         config['ema_fast'] = args.ema_fast
 
     if args.ema_slow is not None:
-        config["ema_slow"] = args.session
+        config["ema_slow"] = args.ema_slow
 
     if args.verbose:
-        logger.setlevel(logging.Info)
+        logger.setLevel(logging.INFO)
 
     logger.info("Engine starting")
     
@@ -70,8 +70,34 @@ def main():
         logger.warning(
         f"FINAL RESULTS | Balance: {results['final_balance']} | "
         f"Trades: {len(results['trade_history'])} | "
-        f"Open: {len(results['open_trades'])}"
-)
+        f"Open: {len(results['open_trades'])}")
+
+        #Equity Curve Plot
+        equity_curve = results["equity_curve"]
+
+        #Extract timestamps and balances
+        timestamps = [point['timestamp'] for point in equity_curve]
+        balances = [point['balance'] for point in equity_curve]
+
+        #Conver timestamps to datetime objects
+        timestamps = [
+            datetime.strptime(ts, "%m/%d/%Y %H:%M")
+            for ts in timestamps
+        ]
+
+
+        plt.plot(timestamps, balances)
+        plt.title("Equity Curve")
+        plt.xlabel("Time")
+        plt.ylabel("Balance")
+
+        #Format X-axis dates
+        plt.gca().xaxis.set_major_locator(mdates.MonthLocator(interval=3)) #quarterly tick
+        plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m'))
+
+        plt.xticks(rotation=45)
+        plt.tight_layout()
+        plt.show()
 
 
     except Exception:
@@ -79,6 +105,9 @@ def main():
 
     finally:
         logger.info("Engine stopped")
+
+
+    
 
 if __name__ == "__main__":
     main()

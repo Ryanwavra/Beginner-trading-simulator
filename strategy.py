@@ -41,7 +41,7 @@ class Strategy:
                 if not self.trader.trades:
                     logger.info(f"Buy signal at {price}")
                     stop_loss = price - self.config["stop_loss_offset"]
-                    self.trader.buy(price, stop_loss)
+                    self.trader.buy(price, stop_loss, candle['timestamp'])
 
             # SELL only when crossover happens AND trades exist
             if self.prev_fast_above is True and fast_above is False:

@@ -8,11 +8,14 @@ class Trader:
         self.history = []
         self.config = config
 
-    def buy(self, position, stop_loss):
+        self.equity_curve = []
+
+    def buy(self, position, stop_loss, timestamp):
         try:
             self.trades.append({
                 'position': position,
-                'stop_loss': stop_loss
+                'stop_loss': stop_loss,
+                'timestamp': timestamp
             })
             logger.info(f"Opened trade at {position} with stop loss {stop_loss}")
         except Exception:
@@ -23,12 +26,21 @@ class Trader:
             pnl = price - trade['position']
             logger.info(f"Closed trade at {price}, PnL={pnl}")
 
-            self.history.append(
-                f"opened @ ${trade['position']}, closed @ ${price}, profit ${pnl}"
-            )
+            self.history.append({
+                'entry_price': trade['position'],
+                'exit_price': price,
+                'pnl': pnl,
+                'timestamp': trade['timestamp']
+            })
 
             self.balance += pnl
             self.trades.remove(trade)
+
+            self.equity_curve.append({
+                'balance':self.balance,
+                'timestamp': trade['timestamp']
+            })
+
             return trade
 
         except Exception:
