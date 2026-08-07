@@ -1,9 +1,7 @@
 {
-    "stop_loss_offset": 25,
-    "trailing_offset": 25,
-
     "ema_fast": 50,
     "ema_slow": 200,
-
+    "stop_loss_offset": 25,
+    "trailing_offset": 25,
     "log_level": "INFO"
 }

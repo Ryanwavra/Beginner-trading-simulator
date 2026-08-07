@@ -1,10 +1,5 @@
-2026-08-06 22:32:33,229 [__main__] INFO: Engine starting
-2026-08-06 22:32:33,229 [__main__] CRITICAL: Engine crashed unexpectedly
-Traceback (most recent call last):
-  File "C:\Users\ryanw\OneDrive\Desktop\Beginner_trading_simulator\main.py", line 25, in main
-    market_data = market.MarketData(config)
-  File "C:\Users\ryanw\OneDrive\Desktop\Beginner_trading_simulator\market.py", line 11, in __init__
-    self.volatility = config["volatility"]
-                      ~~~~~~^^^^^^^^^^^^^^
-KeyError: 'volatility'
-2026-08-06 22:32:33,231 [__main__] INFO: Engine stopped
+2026-08-06 23:03:59,357 [__main__] INFO: Engine starting
+2026-08-06 23:04:04,678 [orchestrator] INFO: Orchestrator run started
+2026-08-06 23:04:04,678 [orchestrator] INFO: Processed 0 candles...
+2026-08-06 23:05:11,442 [orchestrator] INFO: Processed 50000 candles...
+2026-08-06 23:07:16,101 [__main__] INFO: Engine stopped

@@ -1,34 +1,21 @@
-import logging
-import random
-
-logger = logging.getLogger(__name__)
+import csv
 
 class MarketData:
     def __init__(self, config):
         self.config = config
-        self.trend_prices = []
+        self.candles = self.load_csv("data/nq_1min_2022-25.csv")  
 
-        self.volatility = config["volatility"]
-        self.trend_strength = int(config["trend_strength"] * 10)
-
-    def trend_generation(self):
-        try:
-            # Generate starting price
-            start_price = random.randint(1, 300)
-            self.trend_prices.append(start_price)
-            logger.debug(f"Starting price generated: {start_price}")
-
-            # Generate trend
-            for i in range(random.randint(1, 200)):
-                noise = random.randint(-self.volatility, self.volatility)
-                bias = random.randint(-self.trend_strength, self.trend_strength)
-
-                new_price = self.trend_prices[-1] + noise + bias
-                self.trend_prices.append(new_price)
-
-            logger.debug(f"Trend generation complete. Total prices: {len(self.trend_prices)}")
-            return self.trend_prices
-
-        except Exception:
-            logger.exception("Market failed to generate trend")
-            raise
+    def load_csv(self, path):
+        candles = []
+        with open(path, "r") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                candles.append({
+                    "timestamp": row["timestamp ET"],  
+                    "open": float(row["open"]),
+                    "high": float(row["high"]),
+                    "low": float(row["low"]),
+                    "close": float(row["close"]),
+                    "volume": float(row["volume"])
+                })
+        return candles
