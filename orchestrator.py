@@ -15,12 +15,13 @@ class Orchestrator:
 
         for price in self.prices[:self.config["ticks"]]:
             logger.debug(f"Engine loop iteration, price={price}")
-            candle = {"close", price}
 
             # If price is None or invalid
             if price is None:
                 logger.warning("Price feed returned None")
                 continue
+
+            candle = {"close": price}
 
             # Strategy decisions
             try:
