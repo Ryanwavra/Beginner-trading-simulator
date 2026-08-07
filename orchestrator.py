@@ -15,6 +15,7 @@ class Orchestrator:
 
         for price in self.prices[:self.config["ticks"]]:
             logger.debug(f"Engine loop iteration, price={price}")
+            candle = {"close", price}
 
             # If price is None or invalid
             if price is None:
@@ -23,8 +24,7 @@ class Orchestrator:
 
             # Strategy decisions
             try:
-                self.strategy.buy(price)
-                self.strategy.sell(price)
+                self.strategy.update(candle)
             except Exception:
                 logger.exception("Strategy failed during buy/sell cycle")
 

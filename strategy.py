@@ -1,4 +1,7 @@
 import logging
+import talib
+import numpy as np
+
 logger = logging.getLogger(__name__)
 
 class Strategy:
@@ -6,38 +9,55 @@ class Strategy:
         self.trader = trader
         self.config = config
 
-    def buy(self, price):
+        #STore closing prices as they come in 
+        self.closes = []
+
+    def update(self, candle):
         try:
-            if price < self.config["buy_threshold"]:
+            price = candle["close"]
+            self.closes.append(price)
+
+            #We need enough candles to compute EMA_slow
+            if len(self.closes) < self.config["ema_slow"]:
+                return
+
+            closes_np = np.array(self.closes)
+
+            #compute EMAs using TA-Lib
+            ema_fast = talib.EMA(closes_np, timeperiod=self.config["ema_fast"])
+            ema_slow = talib.EMA(closes_np, timeperiod=self.config["ema_slow"])
+
+            i = len(closes_np) - 1 #current index
+
+            #Entry Logic for EMA Crossover
+
+            #Fast EMA crosses above slow EMA = BUY
+            if ema_fast[i] > ema_slow[i]:
                 logger.info(f"Buy signal at {price}")
-                stop_loss = price - self.config["stop_loss_offset"]
+                stop_loss = price - self.config["Stop_loss_offset"]
                 self.trader.buy(price, stop_loss)
 
-        except Exception:
-            logger.exception("Strategy buy() failed")
+            #Fast EMA crosses below slow EMA = SELL
+            elif ema_fast[i] < ema_slow[i]:
+                logger.info(f"Sell signal at {price}")
+                for trade in self.trader.trades[:]:
+                    self.trader.update_trad(trade, price)
 
-    def sell(self, price):
-        try:
+            #Risk Management
             for trade in self.trader.trades[:]:
 
-                # Take profit
-                if price > self.config["take_profit"]:
-                    logger.info(f"Sell signal (take profit) at {price}")
+                #Stop loss hit
+                if price <= trade['stop_loss']:
+                    logger.info(f"Stop loss hit at {price}")
                     self.trader.update_trade(trade, price)
 
-                # Stop loss
-                elif price <= trade['stop_loss']:
-                    logger.info(f"Sell signal (stop loss) at {price}")
-                    self.trader.update_trade(trade, price)
-
-                # Trailing stop
-                elif price >= trade['stop_loss'] + self.config["trailing_offset"]:
+                #Trailing stop movement
+                elif price >= trade['stop_loss'] + self.config['trailing_offset']:
                     logger.info(f"Trailing stop moved at {price}")
                     trade['stop_loss'] = price - self.config["stop_loss_offset"]
 
-
         except Exception:
-            logger.exception("Strategy sell() failed")
+            logger.exception("Strategy update() failed")
 
     def last_sell(self, price):
         try:
