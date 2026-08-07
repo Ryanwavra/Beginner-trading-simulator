@@ -9,8 +9,8 @@ with open("config/default.json") as f:
     config = json.load(f)
 
 logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(name)s] %(levelname)s: %(message)s",
+    level=logging.WARNING,
+    format="%(asctime)s [%(name)s] %(message)s",
     handlers=[
         logging.FileHandler("logs/engine.log", mode="w"),
         logging.StreamHandler()
@@ -29,7 +29,12 @@ def main():
 
         engine.run()
         results = engine.finalize()
-        print(results)
+        logger.warning(
+        f"FINAL RESULTS | Balance: {results['final_balance']} | "
+        f"Trades: {len(results['trade_history'])} | "
+        f"Open: {len(results['open_trades'])}"
+)
+
 
     except Exception:
         logger.critical("Engine crashed unexpectedly", exc_info=True)

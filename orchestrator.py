@@ -12,8 +12,8 @@ class Orchestrator:
         logger.info("Orchestrator run started")
 
         for i, candle in enumerate(self.market.candles):
-            if i % 50000 == 0:
-                logger.info(f"Processed {i} candles...")
+            if i % 200000 == 0:
+                print(f"Processed {i} candles...")
 
             try:
                 self.strategy.update(candle)
@@ -22,7 +22,7 @@ class Orchestrator:
 
 
 
-        logger.info("Orchestrator run completed")
+        logger.info( "Orchestrator run completed")
 
     def finalize(self):
         try:

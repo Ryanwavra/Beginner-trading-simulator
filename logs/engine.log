@@ -1,5 +1,1 @@
-2026-08-06 23:03:59,357 [__main__] INFO: Engine starting
-2026-08-06 23:04:04,678 [orchestrator] INFO: Orchestrator run started
-2026-08-06 23:04:04,678 [orchestrator] INFO: Processed 0 candles...
-2026-08-06 23:05:11,442 [orchestrator] INFO: Processed 50000 candles...
-2026-08-06 23:07:16,101 [__main__] INFO: Engine stopped
+2026-08-06 23:33:14,069 [__main__] FINAL RESULTS | Balance: 1371.25 | Trades: 3177 | Open: 0

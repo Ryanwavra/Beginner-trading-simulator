@@ -1,7 +1,4 @@
 import logging
-import talib
-import numpy as np
-
 logger = logging.getLogger(__name__)
 
 class Strategy:
@@ -9,8 +6,13 @@ class Strategy:
         self.trader = trader
         self.config = config
 
-        # Store closing prices
-        self.closes = []
+        # Incremental EMA values
+        self.ema_fast = None
+        self.ema_slow = None
+
+        # Alpha coefficients for incremental EMA
+        self.alpha_fast = 2 / (config["ema_fast"] + 1)
+        self.alpha_slow = 2 / (config["ema_slow"] + 1)
 
         # Track previous EMA relationship for true crossover detection
         self.prev_fast_above = None
@@ -18,22 +20,20 @@ class Strategy:
     def update(self, candle):
         try:
             price = candle["close"]
-            self.closes.append(price)
 
-            # Need enough candles to compute EMAs
-            if len(self.closes) < self.config["ema_slow"]:
+            # Initialize EMAs on first candle
+            if self.ema_fast is None:
+                self.ema_fast = price
+                self.ema_slow = price
                 return
 
-            closes_np = np.array(self.closes)
+            # Incremental EMA update (O(1))
+            self.ema_fast = self.ema_fast + self.alpha_fast * (price - self.ema_fast)
+            self.ema_slow = self.ema_slow + self.alpha_slow * (price - self.ema_slow)
 
-            ema_fast = talib.EMA(closes_np, timeperiod=self.config["ema_fast"])
-            ema_slow = talib.EMA(closes_np, timeperiod=self.config["ema_slow"])
+            # Determine current EMA relationship
+            fast_above = self.ema_fast > self.ema_slow
 
-            i = len(closes_np) - 1
-
-            fast_above = ema_fast[i] > ema_slow[i]
-
-            
             # TRUE CROSSOVER ENTRY LOGIC
 
             # BUY only when crossover happens AND no open trades
@@ -54,7 +54,6 @@ class Strategy:
             self.prev_fast_above = fast_above
 
             # RISK MANAGEMENT
-  
             for trade in self.trader.trades[:]:
 
                 # Stop loss hit
