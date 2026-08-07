@@ -4,6 +4,21 @@ import trader
 import strategy
 import market
 import orchestrator
+from argparse import ArgumentParser
+
+def build_cli():
+    parser = ArgumentParser(description="Trading Engine CLI")
+
+    parser.add_argument('--sl', type=int, default=None, help='Override stop loss')
+    parser.add_argument('--sl_trailing', type=int, default=None, help='Override trailing stop loss')
+    parser.add_argument('--ema_fast', type=int, default=None, help='Override fast EMA')
+    parser.add_argument('--ema_slow', type=int, default=None, help='Override slow EMA')
+    parser.add_argument('--verbose', action="store_true", help='Enable verbose logging')
+
+    return parser.parse_args()
+    
+ 
+
 
 with open("config/default.json") as f:
     config = json.load(f)
@@ -20,15 +35,38 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 def main():
+    args = build_cli()
+
+    # Apply CLI overrids to config
+    if args.sl is not None:
+        config['stop_loss_offset'] = args.sl
+
+    if args.sl_trailing is not None:
+        config['trailing_offset']
+
+    if args.ema_fast is not None:
+        config['ema_fast'] = args.ema_fast
+
+    if args.ema_slow is not None:
+        config["ema_slow"] = args.session
+
+    if args.verbose:
+        logger.setlevel(logging.Info)
+
     logger.info("Engine starting")
+    
     try:
+        #Build engine objects using updated config
         market_data = market.MarketData(config)
         trader_obj = trader.Trader(config)
         strategy_obj = strategy.Strategy(trader_obj, config)
         engine = orchestrator.Orchestrator(market_data, strategy_obj, trader_obj, config)
 
+        #Run the engine
         engine.run()
         results = engine.finalize()
+
+        #Log final results
         logger.warning(
         f"FINAL RESULTS | Balance: {results['final_balance']} | "
         f"Trades: {len(results['trade_history'])} | "
