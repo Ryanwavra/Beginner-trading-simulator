@@ -8,18 +8,18 @@
     },
 
     "plotting": {
-        "trades_to_pot": 10,
-        "plot_window_padding": 200,
-        "plot_output_directory": "plots/trades",
-        "show_entry_exit": true,
-        "show_stop_loss": true,
+        "plot_window_padding": 50,
+        "trades_to_plot": 10,
+        "plot_output_directory": "plots",
         "plot_style": {
             "line_color": "blue",
             "entry_color": "green",
-            "exit_color": "green",
+            "exit_color": "red",
             "stop_loss_color": "orange"
-        }
-
+        },
+        "show_entry_exit": true,
+        "show_stop_loss": true
     }
+
 }
 

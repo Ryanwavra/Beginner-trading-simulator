@@ -9,6 +9,10 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from datetime import datetime
 
+# NEW: import your plotting module
+from plotting.trade_plotting import plot_last_trades
+
+
 def build_cli():
     parser = ArgumentParser(description="Trading Engine CLI")
 
@@ -20,6 +24,7 @@ def build_cli():
 
     return parser.parse_args()
     
+
 with open("config/default.json") as f:
     config = json.load(f)
 
@@ -37,7 +42,7 @@ logger = logging.getLogger(__name__)
 def main():
     args = build_cli()
 
-    # Apply CLI overrids to config
+    # Apply CLI overrides to config
     if args.sl is not None:
         config['strategy']['stop_loss_offset'] = args.sl
 
@@ -56,49 +61,55 @@ def main():
     logger.info("Engine starting")
     
     try:
-        #Build engine objects using updated config
+        # Build engine objects using updated config
         market_data = market.MarketData(config)
         trader_obj = trader.Trader(config)
         strategy_obj = strategy.Strategy(trader_obj, config)
         engine = orchestrator.Orchestrator(market_data, strategy_obj, trader_obj, config)
 
-        #Run the engine
+        # Run the engine
         engine.run()
         results = engine.finalize()
 
-        #Log final results
+        # Log final results
         logger.warning(
-        f"FINAL RESULTS | Balance: {results['final_balance']} | "
-        f"Trades: {len(results['trade_history'])} | "
-        f"Open: {len(results['open_trades'])}")
+            f"FINAL RESULTS | Balance: {results['final_balance']} | "
+            f"Trades: {len(results['trade_history'])} | "
+            f"Open: {len(results['open_trades'])}"
+        )
 
-        #Equity Curve Plot
+        # Equity Curve Plot
         equity_curve = results["equity_curve"]
 
-        #Extract timestamps and balances
+        # Extract timestamps and balances
         timestamps = [point['timestamp'] for point in equity_curve]
         balances = [point['balance'] for point in equity_curve]
 
-        #Conver timestamps to datetime objects
+        # Convert timestamps to datetime objects
         timestamps = [
             datetime.strptime(ts, "%m/%d/%Y %H:%M")
             for ts in timestamps
         ]
-
 
         plt.plot(timestamps, balances)
         plt.title("Equity Curve")
         plt.xlabel("Time")
         plt.ylabel("Balance")
 
-        #Format X-axis dates
-        plt.gca().xaxis.set_major_locator(mdates.MonthLocator(interval=3)) #quarterly tick
+        # Format X-axis dates
+        plt.gca().xaxis.set_major_locator(mdates.MonthLocator(interval=3))  # quarterly tick
         plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m'))
 
         plt.xticks(rotation=45)
         plt.tight_layout()
         plt.show()
 
+        # NEW: Plot last N trades
+        plot_last_trades(
+            market_data.candles,
+            trader_obj.history,
+            config["plotting"]
+        )
 
     except Exception:
         logger.critical("Engine crashed unexpectedly", exc_info=True)
@@ -106,8 +117,6 @@ def main():
     finally:
         logger.info("Engine stopped")
 
-
-    
 
 if __name__ == "__main__":
     main()

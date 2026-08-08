@@ -12,6 +12,10 @@ class Orchestrator:
         logger.info("Orchestrator run started")
 
         for i, candle in enumerate(self.market.candles):
+
+            # ADD THIS LINE — inject index into candle
+            candle["index"] = i
+
             if i % 200000 == 0:
                 print(f"Processed {i} candles...")
 
@@ -20,16 +24,19 @@ class Orchestrator:
             except Exception:
                 logger.exception("Strategy failed during update() cycle")
 
-
-
-        logger.info( "Orchestrator run completed")
+        logger.info("Orchestrator run completed")
 
     def finalize(self):
         try:
-            last_price = self.market.candles[-1]["close"]
-            logger.info(f"Finalizing trades at last price: {last_price}")
-            self.strategy.last_sell(last_price)
+            last_candle = self.market.candles[-1]
+            last_price = last_candle["close"]
 
+            # ADD THESE TWO LINES
+            last_timestamp = last_candle["timestamp"]
+            last_index = last_candle["index"]
+
+            logger.info(f"Finalizing trades at last price: {last_price}")
+            self.strategy.last_sell(last_price, last_timestamp, last_index)
 
             return {
                 'final_balance': self.trader.balance,

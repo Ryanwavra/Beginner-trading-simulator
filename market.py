@@ -11,7 +11,7 @@ class MarketData:
             reader = csv.DictReader(f)
             for row in reader:
                 candles.append({
-                    "timestamp": row["timestamp ET"],  
+                    "timestamp": str(row["timestamp ET"]),  
                     "open": float(row["open"]),
                     "high": float(row["high"]),
                     "low": float(row["low"]),

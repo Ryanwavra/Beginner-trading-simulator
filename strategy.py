@@ -20,6 +20,8 @@ class Strategy:
     def update(self, candle):
         try:
             price = candle["close"]
+            index = candle["index"]
+            timestamp = candle["timestamp"]
 
             # Initialize EMAs on first candle
             if self.ema_fast is None:
@@ -27,7 +29,7 @@ class Strategy:
                 self.ema_slow = price
                 return
 
-            # Incremental EMA update (O(1))
+            # Incremental EMA update
             self.ema_fast = self.ema_fast + self.alpha_fast * (price - self.ema_fast)
             self.ema_slow = self.ema_slow + self.alpha_slow * (price - self.ema_slow)
 
@@ -41,14 +43,14 @@ class Strategy:
                 if not self.trader.trades:
                     logger.info(f"Buy signal at {price}")
                     stop_loss = price - self.config['strategy']["stop_loss_offset"]
-                    self.trader.buy(price, stop_loss, candle['timestamp'])
+                    self.trader.buy(price, stop_loss, timestamp, index)
 
             # SELL only when crossover happens AND trades exist
             if self.prev_fast_above is True and fast_above is False:
                 if self.trader.trades:
                     logger.info(f"Sell signal at {price}")
                     for trade in self.trader.trades[:]:
-                        self.trader.update_trade(trade, price)
+                        self.trader.update_trade(trade, price, timestamp, index)
 
             # Update previous state
             self.prev_fast_above = fast_above
@@ -59,7 +61,7 @@ class Strategy:
                 # Stop loss hit
                 if price <= trade['stop_loss']:
                     logger.info(f"Stop loss hit at {price}")
-                    self.trader.update_trade(trade, price)
+                    self.trader.update_trade(trade, price, timestamp, index)
 
                 # Trailing stop movement
                 elif price >= trade['stop_loss'] + self.config['strategy']["trailing_offset"]:
@@ -69,10 +71,10 @@ class Strategy:
         except Exception:
             logger.exception("Strategy update() failed")
 
-    def last_sell(self, price):
+    def last_sell(self, price, timestamp, index):
         try:
             logger.info(f"Final sell at {price}")
             for trade in self.trader.trades[:]:
-                self.trader.update_trade(trade, price)
+                self.trader.update_trade(trade, price, timestamp, index)
         except Exception:
             logger.exception("Strategy last_sell() failed")
