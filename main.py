@@ -39,16 +39,16 @@ def main():
 
     # Apply CLI overrids to config
     if args.sl is not None:
-        config['stop_loss_offset'] = args.sl
+        config['strategy']['stop_loss_offset'] = args.sl
 
     if args.sl_trailing is not None:
-        config['trailing_offset'] = args.sl_trailing
+        config['strategy']['trailing_offset'] = args.sl_trailing
 
     if args.ema_fast is not None:
-        config['ema_fast'] = args.ema_fast
+        config['strategy']['ema_fast'] = args.ema_fast
 
     if args.ema_slow is not None:
-        config["ema_slow"] = args.ema_slow
+        config['strategy']["ema_slow"] = args.ema_slow
 
     if args.verbose:
         logger.setLevel(logging.INFO)

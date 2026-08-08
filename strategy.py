@@ -11,8 +11,8 @@ class Strategy:
         self.ema_slow = None
 
         # Alpha coefficients for incremental EMA
-        self.alpha_fast = 2 / (config["ema_fast"] + 1)
-        self.alpha_slow = 2 / (config["ema_slow"] + 1)
+        self.alpha_fast = 2 / (config['strategy']["ema_fast"] + 1)
+        self.alpha_slow = 2 / (config['strategy']["ema_slow"] + 1)
 
         # Track previous EMA relationship for true crossover detection
         self.prev_fast_above = None
@@ -40,7 +40,7 @@ class Strategy:
             if self.prev_fast_above is False and fast_above is True:
                 if not self.trader.trades:
                     logger.info(f"Buy signal at {price}")
-                    stop_loss = price - self.config["stop_loss_offset"]
+                    stop_loss = price - self.config['strategy']["stop_loss_offset"]
                     self.trader.buy(price, stop_loss, candle['timestamp'])
 
             # SELL only when crossover happens AND trades exist
@@ -62,9 +62,9 @@ class Strategy:
                     self.trader.update_trade(trade, price)
 
                 # Trailing stop movement
-                elif price >= trade['stop_loss'] + self.config["trailing_offset"]:
+                elif price >= trade['stop_loss'] + self.config['strategy']["trailing_offset"]:
                     logger.info(f"Trailing stop moved at {price}")
-                    trade['stop_loss'] = price - self.config["stop_loss_offset"]
+                    trade['stop_loss'] = price - self.config['strategy']["stop_loss_offset"]
 
         except Exception:
             logger.exception("Strategy update() failed")
