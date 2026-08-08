@@ -1,8 +1,25 @@
 {
-    "ema_fast": 50,
-    "ema_slow": 200,
-    "stop_loss_offset": 200,
-    "trailing_offset": 25,
-    "log_level": "INFO"
+    "strategy": {
+        "ema_fast": 50,
+        "ema_slow": 200,
+        "stop_loss_offset": 200,
+        "trailing_offset": 25,
+        "log_level": "INFO"
+    },
+
+    "plotting": {
+        "trades_to_pot": 10,
+        "plot_window_padding": 200,
+        "plot_output_directory": "plots/trades",
+        "show_entry_exit": true,
+        "show_stop_loss": true,
+        "plot_style": {
+            "line_color": "blue",
+            "entry_color": "green",
+            "exit_color": "green",
+            "stop_loss_color": "orange"
+        }
+
+    }
 }
 
